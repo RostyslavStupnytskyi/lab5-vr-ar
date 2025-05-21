@@ -20,10 +20,6 @@
 - **ACM (AWS Certificate Manager)** для SSL/TLS сертифікатів
 - **Route53** для налаштувань DNS
 
-## Конфігурація Terraform
-
-Повна Terraform конфігурація знаходиться в директорії `./terraform/`. Детальні інструкції по використанню знаходяться в `./terraform/README.md`.
-
 ## Швидкий старт
 
 1. **Налаштуйте AWS CLI**:
