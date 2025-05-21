@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Lab 5(4) - Model Placement</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="controls">
+      <h3 class="section-title">Materials</h3>
+      <div class="button-group-t1">
+        <button id="materialRealisticBtn">Realistic</button>
+        <button id="materialGoldBtn">Gold</button>
+        <button id="materialGlowBtn">Glow</button>
+        <button id="materialGlassBtn">Glass</button>
+        <button id="materialChromeBtn">Chrome</button>
+        <button id="materialSimpleBtn">Simple</button>
+      </div>
+      
+      <h3 class="section-title">Lighting</h3>
+      <div class="button-group-t2">
+        <button id="toggleDirectionalLightBtn">Light: On</button>
+        <button id="increaseLightIntensityBtn">Intensity +</button>
+        <button id="decreaseLightIntensityBtn">Intensity -</button>
+        <button id="changeLightColorBtn">Color: White</button>
+      </div>
+      
+      <h3 class="section-title">Animations</h3>
+      <div class="button-group-t3">
+        <button id="toggleJumpBtn">Jump: On</button>
+        <button id="toggleRotationBtn">Rotation: On</button>
+      </div>
+    </div>
+    
+    <div id="info">
+      <p>Place the disco ball in AR space</p>
+      <p>Tap on the screen to place the model</p>
+    </div>
+    
+    <audio id="placeSound" src="/aggressive-rock-guitar_120bpm_A_major.wav"></audio>
+    <script type="module" src="/src/task4.js"></script>
+  </body>
+</html>

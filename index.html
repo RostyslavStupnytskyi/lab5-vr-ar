@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AR Lab 5 - Collection of AR Experiences">
+  <title>AR Lab 5 - Tasks Navigation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --primary-color: #642bff;
+      --primary-hover: #7b45ff;
+      --background-color: #111;
+      --card-bg: rgba(30, 30, 40, 0.7);
+      --card-border: rgba(100, 100, 255, 0.2);
+      --card-hover: rgba(40, 40, 60, 0.9);
+      --text-color: #eee;
+      --text-secondary: #aaa;
+      --accent-color: #ff3e7f;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      background-image: radial-gradient(circle at 10% 20%, #303 0%, #101 80%);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeDown 0.8s ease-out;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+    }
+    
+    .tasks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      width: 100%;
+    }
+    
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      height: 320px;
+      animation: fadeIn 0.8s ease-out;
+      animation-fill-mode: both;
+    }
+    
+    .task-card:nth-child(1) { animation-delay: 0.1s; }
+    .task-card:nth-child(2) { animation-delay: 0.2s; }
+    .task-card:nth-child(3) { animation-delay: 0.3s; }
+    .task-card:nth-child(4) { animation-delay: 0.4s; }
+    
+    .task-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      border-color: rgba(100, 100, 255, 0.4);
+      background: var(--card-hover);
+    }
+    
+    .card-img {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      padding: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-img::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+      z-index: 1;
+    }
+    
+    .task-number {
+      position: relative;
+      z-index: 2;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .card-content {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .card-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    
+    .launch-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .launch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(100, 43, 255, 0.4);
+    }
+    
+    .launch-btn:active {
+      transform: translateY(0);
+    }
+    
+    footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      animation: fadeUp 0.8s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .tasks-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      
+      .task-card {
+        height: auto;
+      }
+      
+      .card-img {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AR Laboratory Work 5</h1>
+      <p class="subtitle">Stupnytskyi Rostyslav</p>
+    </header>
+    
+    <div class="tasks-grid">
+      <div class="task-card">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1501699169021-3759ee435d66?q=80&w=500&auto=format')">
+          <div class="task-number">Task 1</div>
+        </div>
+        <div class="card-content">
+          <div>
+            <h2 class="card-title">Basic AR Objects</h2>
+            <p class="card-description">Experience basic 3D objects in augmented reality with custom materials and animations.</p>
+          </div>
+          <a href="task1.html" class="launch-btn">Launch</a>
+        </div>
+      </div>
+      
+      <div class="task-card">
+        <div class="card-img" style="background-image: url('https://media.sketchfab.com/models/2e6d680639bc424abd3af2e2b1ee944f/thumbnails/24941043e54247829f6c205027d4a357/2f489290d4a14fdea57b972c0f3362bf.jpeg')">
+          <div class="task-number">Task 2</div>
+        </div>
+        <div class="card-content">
+          <div>
+            <h2 class="card-title">3D Model Interaction</h2>
+            <p class="card-description">Interact with a 3D model in AR, control lighting, materials, and animations.</p>
+          </div>
+          <a href="task2.html" class="launch-btn">Launch</a>
+        </div>
+      </div>
+      
+      <div class="task-card">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1544027993-37dbfe43562a?q=80&w=500&auto=format')">
+          <div class="task-number">Task 3</div>
+        </div>
+        <div class="card-content">
+          <div>
+            <h2 class="card-title">AR Surface Detection</h2>
+            <p class="card-description">Place objects on detected surfaces in AR with customizable settings.</p>
+          </div>
+          <a href="task3.html" class="launch-btn">Launch</a>
+        </div>
+      </div>
+      
+      <div class="task-card">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format')">
+          <div class="task-number">Task 4</div>
+        </div>
+        <div class="card-content">
+          <div>
+            <h2 class="card-title">AR Model Placement</h2>
+            <p class="card-description">Place a disco ball in AR with material, lighting, and animation controls.</p>
+          </div>
+          <a href="task4.html" class="launch-btn">Launch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2025 AR Lab 5 | WebXR Experiences</p>
+  </footer>
+</body>
+</html>

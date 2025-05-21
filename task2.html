@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AR experience with 3D model control">
+    <title>AR Lab 5 Task 2</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #121212;
+        color: #fff;
+        height: 100vh;
+        overflow: hidden;
+      }
+      
+      #app {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      
+      #controls-panel {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 450px;
+        background-color: rgba(30, 30, 30, 0.85);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 20px;
+        color: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      #controls-panel.hidden {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .panel-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+      }
+      
+      .control-group {
+        margin-bottom: 15px;
+      }
+      
+      .control-title {
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+      }
+      
+      .control-title::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background-color: #3d85c6;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+      
+      .btn-group {
+        display: flex;
+        gap: 8px;
+      }
+      
+      button {
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+      
+      button:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.9);
+      }
+      
+      button.active {
+        background: #3d85c6;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      .slider-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 5px;
+      }
+      
+      .slider-container label {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      input[type="range"] {
+        flex-grow: 1;
+        height: 5px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        outline: none;
+      }
+      
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #3d85c6;
+        cursor: pointer;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+      }
+      
+      input[type="color"] {
+        width: 35px;
+        height: 35px;
+        border: none;
+        padding: 0;
+        border-radius: 8px;
+        background: none;
+        cursor: pointer;
+      }
+      
+      input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+      
+      input[type="color"]::-webkit-color-swatch {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+      }
+      
+      #start-ar-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 15px;
+        margin-top: 20px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+      }
+      
+      #start-ar-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
+      
+      #start-ar-btn:active {
+        transform: translateY(0);
+      }
+      
+      .toggle-controls {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(30, 30, 30, 0.8);
+        color: white;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 101;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+      }
+      
+      .toggle-controls:hover {
+        transform: scale(1.1);
+      }
+      
+      /* Додаткові анімації та ефекти */
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(77, 182, 172, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(77, 182, 172, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(77, 182, 172, 0); }
+      }
+      
+      .pulse {
+        animation: pulse 1.5s infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    
+    <div id="controls-panel">
+      <div class="panel-header">
+        <div class="panel-title">3D Model Control Panel</div>
+      </div>
+      
+      <div class="control-group">
+        <div class="control-title">Enable Rotation</div>
+        <div class="btn-group">
+          <button id="rotation-on" class="active">ON</button>
+          <button id="rotation-off">OFF</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <div class="control-title">Rotation Axis</div>
+        <div class="btn-group">
+          <button id="axis-x">X</button>
+          <button id="axis-y" class="active">Y</button>
+          <button id="axis-z">Z</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <div class="control-title">Material</div>
+        <div class="btn-group">
+          <button id="material-original" class="active">Original</button>
+          <button id="material-alternative">Alternative</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <div class="control-title">Scene Light</div>
+        <div class="btn-group">
+          <button id="scene-light-on" class="active">ON</button>
+          <button id="scene-light-off">OFF</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <div class="control-title">Model Light</div>
+        <div class="btn-group">
+          <button id="model-light-on" class="active">ON</button>
+          <button id="model-light-off">OFF</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <div class="control-title">Model Light Type</div>
+        <div class="btn-group">
+          <button id="light-point" class="active">Point</button>
+          <button id="light-spot">Spot</button>
+          <button id="light-directional">Directional</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <div class="control-title">Model Light Intensity</div>
+        <div class="slider-container">
+          <div class="slider-row">
+            <input type="range" id="light-intensity" min="0" max="10" step="0.1" value="2">
+            <span id="intensity-value">2.0</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <div class="control-title">Model Light Color</div>
+        <div class="slider-container">
+          <div class="slider-row">
+            <input type="color" id="light-color" value="#ffffff">
+            <span id="color-value">#FFFFFF</span>
+          </div>
+        </div>
+      </div>
+      
+      <button id="start-ar-btn" class="pulse">START AR</button>
+    </div>
+    
+    <button class="toggle-controls" id="toggle-controls">⚙️</button>
+    
+    <script type="module" src="/src/task2.js"></script>
+    <script>
+      // Додаємо додаткову інтерактивність для елементів керування
+      document.getElementById('light-intensity').addEventListener('input', function(e) {
+        document.getElementById('intensity-value').textContent = parseFloat(e.target.value).toFixed(1);
+      });
+      
+      document.getElementById('light-color').addEventListener('input', function(e) {
+        document.getElementById('color-value').textContent = e.target.value.toUpperCase();
+      });
+      
+      // Функція переключення панелі керування
+      document.getElementById('toggle-controls').addEventListener('click', function() {
+        document.getElementById('controls-panel').classList.toggle('hidden');
+      });
+    </script>
+  </body>
+</html> 

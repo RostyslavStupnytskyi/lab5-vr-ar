@@ -1,0 +1,282 @@
+body {
+  margin: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: Monospace;
+  font-size: 16px;
+  line-height: 24px;
+  overscroll-behavior: none;
+}
+
+a {
+  color: #ff0;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Updated styles for buttons and controls */
+#controls {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  max-width: 90%;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.button-group-t1 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+button {
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: rgba(60, 60, 80, 0.7);
+  border: 2px solid rgba(100, 100, 140, 0.5);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 70px;
+  line-height: 1.2;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  background-color: rgba(80, 80, 120, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Special styles for material buttons */
+#materialRealisticBtn, #materialGoldBtn, #materialGlowBtn,
+#materialGlassBtn, #materialChromeBtn, #materialSimpleBtn {
+  background-size: 100%;
+  background-position: center;
+  position: relative;
+  padding: 8px 5px;
+  font-size: 10px;
+}
+
+#materialRealisticBtn {
+  background-color: rgba(70, 70, 90, 0.8);
+}
+
+#materialGoldBtn {
+  background-color: rgba(218, 165, 32, 0.8);
+  color: #333;
+}
+
+#materialGlowBtn {
+  background-color: rgba(0, 255, 0, 0.5);
+  border-color: rgba(0, 255, 0, 0.7);
+}
+
+#materialGlassBtn {
+  background-color: rgba(200, 200, 255, 0.3);
+  border-color: rgba(200, 200, 255, 0.5);
+}
+
+#materialChromeBtn {
+  background: linear-gradient(135deg, #aaa, #eee, #aaa);
+  color: #333;
+}
+
+/* Styles for lighting buttons */
+#toggleDirectionalLightBtn, #increaseLightIntensityBtn,
+#decreaseLightIntensityBtn, #changeLightColorBtn {
+  background-color: rgba(255, 215, 0, 0.3);
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+/* Styles for animation buttons */
+#toggleJumpBtn, #toggleRotationBtn {
+  background-color: rgba(70, 130, 180, 0.7);
+  border-color: rgba(70, 130, 180, 0.9);
+}
+
+/* Styles for active buttons */
+button[active] {
+  background-color: rgba(80, 200, 120, 0.7) !important;
+  border-color: rgba(100, 255, 150, 0.9) !important;
+  box-shadow: 0 0 15px rgba(100, 255, 150, 0.5) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+button[active]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+                  rgba(255, 255, 255, 0) 0%, 
+                  rgba(255, 255, 255, 0.3) 50%, 
+                  rgba(255, 255, 255, 0) 100%);
+  animation: shineEffect 2s infinite;
+}
+
+@keyframes shineEffect {
+  0% {
+    transform: translateX(-100%) translateY(-100%);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%);
+  }
+}
+
+canvas {
+  display: block;
+}
+
+a,
+button,
+input,
+select {
+  pointer-events: auto;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 600px) {
+  .button-group-t1 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .button-group-t2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  button {
+    font-size: 10px;
+    padding: 8px 5px;
+  }
+  
+  #controls {
+    bottom: 10px;
+    max-width: 95%;
+    padding: 5px;
+    gap: 5px;
+  }
+  
+  .section-title {
+    margin: 3px 0;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .button-group-t1, .button-group-t2, .button-group-t3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-title {
+    font-size: 12px;
+  }
+}
+
+/* Styles for new button groups */
+.button-group-t2, .button-group-t3 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  color: #fff;
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#info {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 10px;
+  margin: 0 auto;
+  max-width: 80%;
+  z-index: 100;
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#info p {
+  margin: 5px 0;
+  color: white;
+  font-size: 14px;
+}
+
+.icon {
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 4px;
+}
